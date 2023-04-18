@@ -5,29 +5,29 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        
-        int[] N = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
-        int[] count = new int[10];
-        
-        for(int i : N) count[i]++;
-        
-        int maxValue = 0;
-        
-        for (int i = 0; i < count.length; i++) {
-			if(i != 6 && i != 9)
-				if(maxValue < count[i]) maxValue = count[i];
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+		int N = Integer.parseInt(br.readLine());
+		int[] arr = new int[2];
+		int value = 1;
+		
+		for (int i = 0; i < N; i++) {
+			value = 1;
+			
+			arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+			
+			for (int j = 2; j <= Arrays.stream(arr).min().getAsInt(); j++) {
+				if(arr[0] % j == 0 && arr[1] % j == 0) {
+					value *= j;
+					arr[0] /= j;
+					arr[1] /= j;
+					j--;
+				}
+			}
+			bw.write(Integer.toString(value * arr[0] * arr[1]) + "\n");
 		}
-        
-        if(maxValue < count[6] || maxValue < count[9]) {
-        	if(maxValue < (int)Math.ceil((double)(count[6] + count[9]) / 2)) {
-        		bw.write(Integer.toString((int)Math.ceil((double)(count[6] + count[9]) / 2)));
-        	}else bw.write(Integer.toString(maxValue));
-        }else {
-        	bw.write(Integer.toString(maxValue));
-        }
-                
-        bw.flush();
-        bw.close();
+		
+		bw.flush();
+		bw.close();
 	}
 }
