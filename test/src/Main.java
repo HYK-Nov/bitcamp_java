@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Stack;
+import java.util.Arrays;
 
 public class Main {
 
@@ -7,22 +7,18 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		int N = Integer.parseInt(br.readLine());
-		int count = 0;
+		int[] A = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		int[] B = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		int sumA = 0; int sumB = 0;
+		boolean defeat = false;
 		
-		for (int i = 0; i < N; i++) {
-			String[] arr = br.readLine().split("");
-			Stack<String> stack = new Stack<>();
-			
-			for(String str : arr) {
-				if(!stack.isEmpty() && stack.peek().equals(str)) stack.pop();
-				else stack.push(str);
-			}
-			
-			if(stack.isEmpty()) count++;
+		for (int i = 0; i < 9; i++) {
+			if(((sumA += A[i]) > sumB) & (sumA <= (sumB += B[i]))) defeat = true;
+			else if(sumA >= sumB) defeat = false;
 		}
-		
-		bw.write(Integer.toString(count));
+
+		if(defeat == true) bw.write("Yes");
+		else bw.write("No");
 
 		bw.flush();
 		bw.close();
